@@ -1,0 +1,159 @@
+.cards {
+    padding: 30px 20px 30px 20px;
+    &__wrapper {
+        display: flex;        
+        flex-direction: column;
+        border: 0.3px solid #828282;
+        border-radius: 16px;
+        margin-bottom: 30px;
+        &-hidden {
+            display: none;
+        }
+    }
+    &__item {
+        max-width: 340px;
+        margin: 0 auto;
+    }
+    &__img {
+        position: relative;
+        display: block;
+        max-width: 340px;
+        margin: 0 auto;
+        img {
+            object-fit: contain;
+            max-width: 100%;
+        }
+        &-sticker {
+            position: absolute;
+            display: flex;
+            top: 41px;
+            width: 99px;
+            height: 35px;
+            justify-content: center;
+            background-color: #FED74B;
+            span {
+                font-weight: 600;
+                font-size: 12px;
+                align-self: center;
+                color: #3E3E3E;
+                text-transform: uppercase;
+            }
+            &-purple {
+                position: absolute;
+                display: flex;
+                top: 0px;
+                width: 129px;
+                height: 43px;
+                justify-content: center;
+                background-color: #7553FF;
+                border-radius: 15px 0px 12px;
+                span {
+                    font-weight: 500;
+                    font-size: 14px;
+                    align-self: center;
+                    color: #fff;
+                    text-transform: uppercase;
+                }
+            }
+        }
+    }
+    &__descr {
+        padding: 14px 12px 0px 12px;
+        display: flex;
+        flex-direction: column;
+    }
+    &__duration-time {
+        padding-bottom: 10px;
+        font-size: 12px;
+        color: #9E9E9E;
+        img {
+            padding-right: 12px;
+        }
+    }
+    &__offer {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 22px;
+        padding-bottom: 20px;
+    }
+    &__text {
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 400;
+        color: #4B4B4B;
+        ul {
+            padding-left: 23px;
+            li {
+                list-style-image: url('../../icons/check-mark.png');
+                padding-left: 20px;
+                padding-top: 9px;
+            }
+        }
+    }
+    &__time {
+        display: inline-flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 35px;
+        margin-right: 2px;
+        input[type=radio] {
+            display: none;
+            &:checked + label {
+                background: #FED74B;             
+            }
+        }
+        label {
+            display: inline-flex;
+            cursor: pointer;
+            margin: 0 auto;
+            width: 63px;
+            height: 24px;
+            background: #D9E8FF;
+            border-radius: 11px;
+            user-select: none;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+            justify-content: center;
+        }
+    }
+    &__time.card__time_limited .cards__time-button:not(:nth-child(-n+4)) {
+        display: none;
+    }
+    &__footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 19px;
+    }
+    &__prices {
+        display: flex;
+        flex-direction: column;
+        max-width: 100px;
+        &-main {
+            font-size: 30px;
+            font-weight: 400;
+            line-height: 20px;
+            span {
+                font-size: 28px;
+            }
+        }
+        &-pier {
+            font-size: 10px;
+            font-weight: 400;
+            line-height: 11px;
+            margin-top: 10px;;
+            // display: none; //расскоменнтировать для проверки центрирования цены относительно кнопки
+        }
+    }
+    &__btn {
+        width: 193px;
+        height: 44px;
+        background: #FED74B;
+        border: 0.5px solid #CBA500;
+        border-radius: 20px;
+        align-self: start;
+    }
+}
