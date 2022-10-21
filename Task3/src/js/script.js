@@ -24,7 +24,7 @@ const inputDates = {
 };
 
 /** @type {{ id: string, localDtFormat: string, utcDt: Date, direction: string }} */
-let shceduleSelected = null;
+let scheduleSelected = null;
 
 /** @type {'ab' | 'ba' | 'abba'} */
 let dir = 'ab';
@@ -41,10 +41,11 @@ function init() {
     ];
 
     /** @type {HTMLSelectElement} */
-    const scheduleSelect = document.querySelector('#schedule-list');
+    const scheduleSelectForward = document.querySelector('#schedule-list-forward'),
+          scheduleSelectBack = document.querySelector('#schedule-list-back');
 
-    initDirectionSelect(schedule, scheduleSelect);
-    initScheduleSelect(schedule, scheduleSelect);
+    initDirectionSelect(schedule, scheduleSelectForward, scheduleSelectBack);
+    initScheduleSelect(schedule, scheduleSelectForward, scheduleSelectBack);
 }
 
 /**
@@ -67,11 +68,12 @@ function getScheduleObject(dateStr, direction) {
  * @param {{ id: string, localDtFormat: string, utcDt: Date, direction: string }[]} schedule 
  * @param {HTMLSelectElement} select 
  */
-function initScheduleSelect(schedule, select) {
-    generateScheduleOptions(schedule, select);
-    select.addEventListener('change', () => {
-        const id = select.options[select.selectedIndex].value;
-        shceduleSelected = schedule.find(item => item.id === id);
+function initScheduleSelect(schedule, selectForward, selectBack) {
+    updateSelectForward(schedule, selectForward);
+    selectForward.addEventListener('change', () => {
+        const id = selectForward.options[selectForward.selectedIndex].value;
+        scheduleSelected = schedule.find(item => item.id === id);
+        updateSelectBack(schedule, selectBack);
     });
 }
 
@@ -80,12 +82,28 @@ function initScheduleSelect(schedule, select) {
  * @param {{ id: string, localDtFormat: string, utcDt: Date, direction: string }[]} schedule 
  * @param {HTMLSelectElement} selectEl 
  */
-function generateScheduleOptions(schedule, selectEl) {
-    selectEl.innerHTML = '';
-    const scheduleFiltered = dir === 'abba' ? schedule :
-        schedule.filter(item => item.direction === dir);
+function updateSelectForward(schedule, selectEl) {
+    const scheduleFiltered = dir === 'ba' ? 
+        schedule.filter(item => item.direction === dir) :
+        schedule.filter(item => item.direction === 'ab');
+    generateSelectOptions(scheduleFiltered, selectEl);
 
-    scheduleFiltered.forEach((item) => {
+}
+
+function updateSelectBack(schedule, selectEl) {
+    const addedTime = new Date(scheduleSelected.utcDt.getTime()+50 *60 *1000);
+    const scheduleFiltered = schedule.filter(item => item.direction === 'ba' && item.utcDt >= addedTime);
+    generateSelectOptions(scheduleFiltered, selectEl);  
+}
+
+/**
+ * 
+ * @param {*} scheduleItems 
+ * @param {HTMLSelectElement} selectEl 
+ */
+function generateSelectOptions(scheduleItems, selectEl) {
+    selectEl.innerHTML = '';
+    scheduleItems.forEach((item) => {
         const option = document.createElement('option');
         option.innerText = `${item.localDtFormat} ${
             item.direction === 'ab' ? '(из A в B)' : '(из B в A)'
@@ -93,23 +111,35 @@ function generateScheduleOptions(schedule, selectEl) {
         option.value = item.id;
         selectEl.appendChild(option);
     });
-    shceduleSelected = schedule[0];
+    scheduleSelected = scheduleItems[0];
 }
+
+
 
 /**
  * 
  * @param {{ id: string, localDtFormat: string, utcDt: Date, direction: string }[]} schedule 
- * @param {HTMLSelectElement} scheduleSelect 
+ * @param {HTMLSelectElement} scheduleSelectForward 
  */
-function initDirectionSelect(schedule, scheduleSelect) {
+function initDirectionSelect(schedule, scheduleSelectForward, scheduleSelectBack) {
     /** @type {HTMLSelectElement} */
     const dirSelect = document.querySelector('#select-direction');
     dirSelect.value = dir;
 
     dirSelect.addEventListener('change', () => {
         dir = dirSelect.options[dirSelect.selectedIndex].value;
-        generateScheduleOptions(schedule, scheduleSelect);
+        updateSelectForward(schedule, scheduleSelectForward);
+        updateSelectBack(schedule, scheduleSelectBack);
+        updateScheduleBackSelectVisibility(scheduleSelectBack);        
     });
+}
+
+/**
+ * 
+ * @param {HTMLSelectElement} scheduleSelectBack 
+ */
+function updateScheduleBackSelectVisibility(scheduleSelectBack) {   
+    scheduleSelectBack.style.display = dir === "abba" ? "inline" : "none";
 }
 
 init();
