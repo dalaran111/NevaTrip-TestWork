@@ -19,6 +19,8 @@
 
 2. БД и JS часть.
 
+![Screenshot](https://github.com/dalaran111/NevaTrip-TestWork/blob/master/Task2/Task2bd.png?raw=true)
+
 2.1 Билеты на событие
 
 Решение: Исходную таблицу необходимо было декомпозировать, чтобы избавиться от избыточности информации.
