@@ -8,14 +8,24 @@
     <link rel="stylesheet" href="css/style.min.css">
 </head>
 <body>
-    <select class="select-direction" id="select-direction">
-        <option value="ab">из A в B</option>
-        <option value="ba">из B в A</option>
-        <option value="abba">из A в B и обратно в А</option>
-      </select>
+    <div class="wrapper">
+        <select class="select-direction" id="select-direction">
+            <option value="ab">из A в B</option>
+            <option value="ba">из B в A</option>
+            <option value="abba">из A в B и обратно в А</option>
+        </select>
+        <select id="schedule-list-forward"></select>
+        <select id="schedule-list-back" style="display: none;"></select>
+    </div>
 
-      <select id="schedule-list-forward"></select>
-      <select id="schedule-list-back" style="display: none;"></select>
+
+    <div class="result__wrapper">
+        <label for="num">Количество билетов</label>
+        <input id="num">
+        <button>Посчитать</button>
+        <p id="result"></p>
+    </div>
+
       
       
       <script src="js/script.js"></script>

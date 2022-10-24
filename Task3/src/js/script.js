@@ -23,11 +23,26 @@ const inputDates = {
   ],
 };
 
+/**
+ * @type {700 | 1200};
+ */
+let ticketPrice = 700;
+
+
 /** @type {{ id: string, localDtFormat: string, utcDt: Date, direction: string }} */
 let scheduleSelected = null;
 
 /** @type {'ab' | 'ba' | 'abba'} */
 let dir = 'ab';
+
+
+ const defaultTravelTime = 50;
+
+/**
+ * @type {{direction: string, time: Date}}
+ */
+let finalForwardInfo = {};
+let finalBackInfo = {};
 
 function init() {
     // Автоматический перевод из UTC в локальное время браузера
@@ -46,6 +61,7 @@ function init() {
 
     initDirectionSelect(schedule, scheduleSelectForward, scheduleSelectBack);
     initScheduleSelect(schedule, scheduleSelectForward, scheduleSelectBack);
+    calcResult();
 }
 
 /**
@@ -70,10 +86,20 @@ function getScheduleObject(dateStr, direction) {
  */
 function initScheduleSelect(schedule, selectForward, selectBack) {
     updateSelectForward(schedule, selectForward);
+    finalForwardInfo.time = selectForward.utcDt;
     selectForward.addEventListener('change', () => {
         const id = selectForward.options[selectForward.selectedIndex].value;
         scheduleSelected = schedule.find(item => item.id === id);
+        console.log(scheduleSelected); //Оставил для удобства проверки
+        finalForwardInfo.direction = scheduleSelected.direction === 'ba' ? 'из B в А' : 'из А в В';
+        finalForwardInfo.time = scheduleSelected.utcDt;
         updateSelectBack(schedule, selectBack);
+    });
+    selectBack.addEventListener('change', () => {
+        const id = selectBack.options[selectBack.selectedIndex].value;
+        scheduleSelected = schedule.find(item => item.id === id);
+        finalBackInfo.time = scheduleSelected.utcDt;
+        console.log(scheduleSelected); // Оставил для удобства проверки
     });
 }
 
@@ -93,7 +119,7 @@ function updateSelectForward(schedule, selectEl) {
 function updateSelectBack(schedule, selectEl) {
     const addedTime = new Date(scheduleSelected.utcDt.getTime()+50 *60 *1000);
     const scheduleFiltered = schedule.filter(item => item.direction === 'ba' && item.utcDt >= addedTime);
-    generateSelectOptions(scheduleFiltered, selectEl);  
+    generateSelectOptions(scheduleFiltered, selectEl);
 }
 
 /**
@@ -130,7 +156,9 @@ function initDirectionSelect(schedule, scheduleSelectForward, scheduleSelectBack
         dir = dirSelect.options[dirSelect.selectedIndex].value;
         updateSelectForward(schedule, scheduleSelectForward);
         updateSelectBack(schedule, scheduleSelectBack);
-        updateScheduleBackSelectVisibility(scheduleSelectBack);        
+        updateScheduleBackSelectVisibility(scheduleSelectBack);
+        dir === "abba" ? ticketPrice = 1200 : ticketPrice = 700;
+        dir === "abba" ? finalBackInfo.direction = 'и обратно в А' :  finalBackInfo.direction = null;
     });
 }
 
@@ -140,6 +168,38 @@ function initDirectionSelect(schedule, scheduleSelectForward, scheduleSelectBack
  */
 function updateScheduleBackSelectVisibility(scheduleSelectBack) {   
     scheduleSelectBack.style.display = dir === "abba" ? "inline" : "none";
+}
+
+function calcResult() {
+
+    document.querySelector('button').addEventListener('click', function() {
+        const num = document.querySelector('#num').value;
+        if (dir === "abba") {
+            if (finalBackInfo.time == undefined || finalForwardInfo.time == undefined) {
+                document.querySelector('#result').innerText = 'Выберите время!';
+            }
+            else {
+                let distance = new Date(((finalBackInfo.time.getTime() + 50 *60 *1000) - finalForwardInfo.time.getTime())).getTime();
+                let newBackTime = new Date (finalBackInfo.time.getTime()+50*60*1000);
+                let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.querySelector('#result').innerText = `Вы выбрали ${num} билета по маршруту ${finalForwardInfo.direction} ${finalBackInfo.direction ? finalBackInfo.direction+" " : ""}стоимостью ${ticketPrice*num}\n Это путешествие займет у вас ${days + "d " + hours + "h "
+                + minutes + "m " + seconds + "s "}\n Теплоход отправляется  ${DATETIME_FORMATTER.format(new Date(finalForwardInfo.time + 'Z'))}, a прибудет ${DATETIME_FORMATTER.format(new Date((newBackTime) + 'Z'))}`;
+
+            }
+        } else {
+            if (finalForwardInfo.time == undefined) {
+                document.querySelector('#result').innerText = 'Выберите время!';
+            } else {
+                let newForwardTime = new Date(finalForwardInfo.time.getTime()+50*60*1000);
+
+                document.querySelector('#result').innerText = `Вы выбрали ${num} билета по маршруту ${finalForwardInfo.direction} стоимостью ${ticketPrice*num}\n  Это путешествие займет у вас ${defaultTravelTime} минут\n Теплоход отправляется  ${DATETIME_FORMATTER.format(new Date(finalForwardInfo.time + 'Z'))}, a прибудет ${DATETIME_FORMATTER.format(new Date((newForwardTime) + 'Z'))}`;
+            }
+        }
+    });
 }
 
 init();

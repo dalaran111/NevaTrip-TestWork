@@ -1,3 +1,22 @@
-.select-direction {
-    margin: 50px;
+.wrapper {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 50px 0 0 50px ;
+}
+.result__wrapper {
+    display: block;
+    margin: 100px 0 0 50px;
+    input {
+
+        text-align: center;
+    }
+    p {
+        display:block;
+        font-size: 14px;
+        font-weight: 600;
+        padding-top: 15px;
+        max-width: 650px;
+        color: #000;
+    }
 }
