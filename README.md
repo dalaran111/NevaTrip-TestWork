@@ -12,6 +12,6 @@
 
 Решение: Для .blog добавляем box-sizing: border-box; 
                    добавляем overflow: hidden;
-         Также можно добавить table { font-size: 14px } для более аккуратного отображения на маленьких устройствах
+Также можно добавить table { font-size: 14px } для более аккуратного отображения на маленьких устройствах
 
 ![Screenshot](https://github.com/dalaran111/NevaTrip-TestWork/blob/master/Task1/src/img/Table%20scroll/%D0%A3%D0%B1%D0%B8%D1%80%D0%B0%D0%B5%D0%BC%20%D1%81%D0%BA%D1%80%D0%BE%D0%BB%D0%BB.png?raw=true)
