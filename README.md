@@ -10,4 +10,4 @@
 2. Таблица на странице
 В текст статьи на странице с адаптивной версткой менеджеры добавили таблицу. На десктопе таблицы выглядят хорошо, но на мобиле - появляется горизонтальный скролл, верстка едет. Что делать?
 
-![Screenshot](https://github.com/dalaran111/NevaTrip-TestWork/blob/master/Task1/src/img/Table scroll/Убираем скролл.png)
+![Screenshot](https://github.com/dalaran111/NevaTrip-TestWork/blob/master/Task1/src/img/Table%20scroll/%D0%A3%D0%B1%D0%B8%D1%80%D0%B0%D0%B5%D0%BC%20%D1%81%D0%BA%D1%80%D0%BE%D0%BB%D0%BB.png?raw=true)
