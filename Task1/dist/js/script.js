@@ -37,8 +37,10 @@ function initMoreBtns() {
             const timeEl = document.querySelector(`#card-${cardId} .cards__time`);
             if (timeEl.classList.contains(TIMESTAMPS_LIMITED_CLASS)) {
                 timeEl.classList.remove(TIMESTAMPS_LIMITED_CLASS);
+                moreBtnEl.textContent = "Скрыть";
             } else {
                 timeEl.classList.add(TIMESTAMPS_LIMITED_CLASS);
+                moreBtnEl.textContent = "Еще";
             }
         });
     });

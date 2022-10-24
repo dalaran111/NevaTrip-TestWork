@@ -174,11 +174,6 @@
             margin-right: 2px;
             margin-top: 103px;
             max-width: 203px;
-            // &-button {
-            //     &:not(:nth-child(-n+3)) {
-            //         display: none;
-            //     }
-            // }
         }
         &__time.card__time_limited .cards__time-button:not(:nth-child(-n+3)) {
             display: none;
